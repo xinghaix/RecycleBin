@@ -21,6 +21,8 @@ namespace RecycleBin
 
         [DllImport("shell32.dll")]
         private static extern int SHEmptyRecycleBin(IntPtr handle, string root, int flags);
+        
+        private static Shqueryrbinfo shqueryrbinfo;
 
         [DllImport("shell32.dll")]
         private static extern int SHQueryRecycleBin(string pszRootPath, ref Shqueryrbinfo queryInfo);
@@ -35,7 +37,6 @@ namespace RecycleBin
 
         public static int GetCount()
         {
-            Shqueryrbinfo shqueryrbinfo = new Shqueryrbinfo();
             shqueryrbinfo.cbSize = Marshal.SizeOf(typeof(Shqueryrbinfo));
             SHQueryRecycleBin(string.Empty, ref shqueryrbinfo);
             return (int) shqueryrbinfo.i64NumItems;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace RecycleBin
@@ -11,6 +10,7 @@ namespace RecycleBin
         private NotifyIcon _notifyIcon;
         private readonly RecycleBinHandle _recycleBinHandle;
         private bool _recycleBinIsEmpty = true;
+        private TrayContextMenu _trayContextMenu = new TrayContextMenu();
 
         public Tray()
         {
@@ -36,28 +36,23 @@ namespace RecycleBin
             var openMenuItem = new ToolStripMenuItem("打开回收站", null, _recycleBinHandle.Open);
             var clearMenuItem = new ToolStripMenuItem("清空回收站", null, _recycleBinHandle.Clear);
             var exitMenuItem = new ToolStripMenuItem("退出", null, TrayExit);
-            var settingsMenuItem = new ToolStripMenuItem("设置", null, (sender, e) =>
-            {
-                var form = new Form {FormBorderStyle = FormBorderStyle.FixedDialog, 
-                    Location = new Point(10, 10)};
-                form.Show();
-            });
-            
+            // var settingsMenuItem = new ToolStripMenuItem("设置", null, (sender, e) =>
+            // {
+            //     if (_trayContextMenu == null)
+            //     {
+            //         _trayContextMenu = new TrayContextMenu();
+            //     }
+            //     _trayContextMenu.Visible = true;
+            // });
+            //
             // 添加菜单
             var contextMenuStrip = new ContextMenuStrip();
-            contextMenuStrip.Items.Add(settingsMenuItem);
+            // contextMenuStrip.Items.Add(settingsMenuItem);
             contextMenuStrip.Items.Add(openMenuItem);
             contextMenuStrip.Items.Add(clearMenuItem);
             contextMenuStrip.Items.Add(exitMenuItem);
             // 设置右键菜单
             _notifyIcon.ContextMenuStrip = contextMenuStrip;
-
-            // _notifyIcon.MouseClick += (sender, e) =>
-            // {
-            //     var form = new Form {FormBorderStyle = FormBorderStyle.FixedDialog,
-            //         Location = Control.MousePosition};
-            //     form.Show();
-            // };
 
             // 托盘图标添加鼠标双击事件
             _notifyIcon.MouseDoubleClick += (sender, e) =>
