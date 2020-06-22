@@ -9,8 +9,13 @@ namespace RecycleBin
     public class Tray
     {
         private NotifyIcon _notifyIcon;
-        private readonly RecycleBinHandle _recycleBinHandle = new RecycleBinHandle();
+        private readonly RecycleBinHandle _recycleBinHandle;
         private bool _recycleBinIsEmpty = true;
+
+        public Tray()
+        {
+            _recycleBinHandle = new RecycleBinHandle();
+        }
 
         public void CreateTrayIcon()
         {
@@ -18,7 +23,7 @@ namespace RecycleBin
 
             _notifyIcon = new NotifyIcon
             {
-                Icon = new Icon("recycle-bin.ico"),
+                Icon = Properties.Resources.RecycleBinEmptyIcon,
                 Text = @"回收站",
                 Visible = true
             };
@@ -31,24 +36,33 @@ namespace RecycleBin
             var openMenuItem = new ToolStripMenuItem("打开回收站", null, _recycleBinHandle.Open);
             var clearMenuItem = new ToolStripMenuItem("清空回收站", null, _recycleBinHandle.Clear);
             var exitMenuItem = new ToolStripMenuItem("退出", null, TrayExit);
-
+            var settingsMenuItem = new ToolStripMenuItem("设置", null, (sender, e) =>
+            {
+                var form = new Form {FormBorderStyle = FormBorderStyle.FixedDialog, 
+                    Location = new Point(10, 10)};
+                form.Show();
+            });
+            
             // 添加菜单
             var contextMenuStrip = new ContextMenuStrip();
-            contextMenuStrip.Items.Add("");
+            contextMenuStrip.Items.Add(settingsMenuItem);
             contextMenuStrip.Items.Add(openMenuItem);
             contextMenuStrip.Items.Add(clearMenuItem);
             contextMenuStrip.Items.Add(exitMenuItem);
             // 设置右键菜单
             _notifyIcon.ContextMenuStrip = contextMenuStrip;
 
+            // _notifyIcon.MouseClick += (sender, e) =>
+            // {
+            //     var form = new Form {FormBorderStyle = FormBorderStyle.FixedDialog,
+            //         Location = Control.MousePosition};
+            //     form.Show();
+            // };
+
             // 托盘图标添加鼠标双击事件
             _notifyIcon.MouseDoubleClick += (sender, e) =>
             {
-                // 鼠标左键单击
-                if (e.Button == MouseButtons.Left)
-                {
-                    _recycleBinHandle.Clear(sender, e);
-                }
+                if (e.Button == MouseButtons.Left) _recycleBinHandle.Clear(sender, e);
             };
 
             // 实时监听回收站是否存在文件，如果存在就修改托盘图标显示
@@ -61,9 +75,9 @@ namespace RecycleBin
             if (_recycleBinIsEmpty == isEmpty) return;
                 
             _recycleBinIsEmpty = isEmpty;
-            _notifyIcon.Icon = isEmpty ? 
-                new Icon("recycle-bin.ico") : 
-                new Icon("recycle-bin-full.ico"); 
+            _notifyIcon.Icon = isEmpty ?
+                Properties.Resources.RecycleBinEmptyIcon :
+                Properties.Resources.RecycleBinFullIcon; 
         }
 
         // 退出程序
