@@ -8,9 +8,9 @@ namespace RecycleBin
     public class Tray
     {
         private NotifyIcon _notifyIcon;
-        private readonly RecycleBinHandle _recycleBinHandle;
         private bool _recycleBinIsEmpty = true;
-        private TrayContextMenu _trayContextMenu = new TrayContextMenu();
+        private readonly RecycleBinHandle _recycleBinHandle;
+        private readonly Language _language = new Language();
 
         public Tray()
         {
@@ -24,18 +24,62 @@ namespace RecycleBin
             _notifyIcon = new NotifyIcon
             {
                 Icon = Properties.Resources.RecycleBinEmptyIcon,
-                Text = @"回收站",
+                Text = _language.Get("RecycleBin"),
                 Visible = true
             };
-            
-            // ContextMenu和MenuItem在.net3.1之后的版本将不可用
-            // var openMenuItem = new MenuItem("打开");
-            // var contextMenu = new ContextMenu();
-            // contextMenu.MenuItems.Add(openMenuItem);
-            // _notifyIcon.ContextMenu = contextMenu;
-            var openMenuItem = new ToolStripMenuItem("打开回收站", null, _recycleBinHandle.Open);
-            var clearMenuItem = new ToolStripMenuItem("清空回收站", null, _recycleBinHandle.Clear);
-            var exitMenuItem = new ToolStripMenuItem("退出", null, TrayExit);
+
+            var languageMenuItem = new ToolStripMenuItem(_language.Get("Language"), null, (sender, e) => { });
+            var openMenuItem = new ToolStripMenuItem(_language.Get("OpenRecycleBin"), null, _recycleBinHandle.Open);
+            var clearMenuItem = new ToolStripMenuItem(_language.Get("ClearRecycleBin"), null, _recycleBinHandle.Clear);
+            var exitMenuItem = new ToolStripMenuItem(_language.Get("Exit"), null, TrayExit);
+
+            // 添加菜单
+            var contextMenuStrip = new ContextMenuStrip();
+            // contextMenuStrip.Items.Add(settingsMenuItem);
+            contextMenuStrip.Items.Add(languageMenuItem);
+            contextMenuStrip.Items.Add(openMenuItem);
+            contextMenuStrip.Items.Add(clearMenuItem);
+            contextMenuStrip.Items.Add(exitMenuItem);
+            // 设置右键菜单
+            _notifyIcon.ContextMenuStrip = contextMenuStrip;
+
+            // 语言设置添加二级菜单
+            var supportedLanguages = _language.Get("SupportedLanguages");
+            if (!string.IsNullOrEmpty(supportedLanguages))
+            {
+                var languages = supportedLanguages.Split(char.Parse(","));
+                foreach (var language in languages)
+                {
+                    var languageMenuItemTmp = new ToolStripMenuItem(language, null,
+                        (sender, e) =>
+                        {
+                            if (!(sender is ToolStripMenuItem toolStripMenuItem)) return;
+                            // 设置选中
+                            toolStripMenuItem.Checked = true;
+
+                            // 修改语言
+                            _language.SetLocal(language);
+
+                            foreach (var dropDownItem in languageMenuItem.DropDownItems)
+                            {
+                                if (dropDownItem.Equals(toolStripMenuItem)) continue;
+                                // 其他语言设置为未选中
+                                if (dropDownItem is ToolStripMenuItem dropDownItemTmp)
+                                    dropDownItemTmp.Checked = false;
+                            }
+
+                            contextMenuStrip.Items[0].Text = _language.Get("Language");
+                            contextMenuStrip.Items[1].Text = _language.Get("OpenRecycleBin");
+                            contextMenuStrip.Items[2].Text = _language.Get("ClearRecycleBin");
+                            contextMenuStrip.Items[3].Text = _language.Get("Exit");
+                        });
+
+                    if (_language.GetLocal() == language) languageMenuItemTmp.Checked = true;
+
+                    languageMenuItem.DropDownItems.Add(languageMenuItemTmp);
+                }
+            }
+
             // var settingsMenuItem = new ToolStripMenuItem("设置", null, (sender, e) =>
             // {
             //     if (_trayContextMenu == null)
@@ -44,15 +88,6 @@ namespace RecycleBin
             //     }
             //     _trayContextMenu.Visible = true;
             // });
-            //
-            // 添加菜单
-            var contextMenuStrip = new ContextMenuStrip();
-            // contextMenuStrip.Items.Add(settingsMenuItem);
-            contextMenuStrip.Items.Add(openMenuItem);
-            contextMenuStrip.Items.Add(clearMenuItem);
-            contextMenuStrip.Items.Add(exitMenuItem);
-            // 设置右键菜单
-            _notifyIcon.ContextMenuStrip = contextMenuStrip;
 
             // 托盘图标添加鼠标双击事件
             _notifyIcon.MouseDoubleClick += (sender, e) =>
@@ -68,11 +103,10 @@ namespace RecycleBin
         private void HandleTrayIcon(bool isEmpty)
         {
             if (_recycleBinIsEmpty == isEmpty) return;
-                
+
             _recycleBinIsEmpty = isEmpty;
-            _notifyIcon.Icon = isEmpty ?
-                Properties.Resources.RecycleBinEmptyIcon :
-                Properties.Resources.RecycleBinFullIcon; 
+            _notifyIcon.Icon =
+                isEmpty ? Properties.Resources.RecycleBinEmptyIcon : Properties.Resources.RecycleBinFullIcon;
         }
 
         // 退出程序
