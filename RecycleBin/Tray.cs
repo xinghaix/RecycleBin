@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace RecycleBin
@@ -125,6 +126,41 @@ namespace RecycleBin
             // 释放资源
             _notifyIcon.Dispose();
             _notifyIcon = null;
+        }
+
+        public static bool CreateShortcut(string directory, string shortcutName, string targetPath,
+            string description = null, string iconLocation = null)
+        {
+            try
+            {
+                if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+
+                // 添加引用 Com 中搜索 Windows.Script.Host.Object.Model
+                var shortcutPath = Path.Combine(directory, $"{shortcutName}.lnk");
+                var shell = new IWshRuntimeLibrary.WshShell();
+                // 创建快捷方式对象
+                var shortcut = (IWshRuntimeLibrary.IWshShortcut) shell.CreateShortcut(shortcutPath);
+                // 指定目标路径
+                shortcut.TargetPath = targetPath;
+                // 设置起始位置
+                shortcut.WorkingDirectory = Path.GetDirectoryName(targetPath);
+                // 设置运行方式，默认为常规窗口
+                shortcut.WindowStyle = 1;
+                // 设置备注
+                shortcut.Description = description;
+                // 设置图标路径
+                shortcut.IconLocation = string.IsNullOrWhiteSpace(iconLocation) ? targetPath : iconLocation;
+                // 保存快捷方式
+                shortcut.Save();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            return false;
         }
     }
 }

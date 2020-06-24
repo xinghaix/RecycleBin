@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecycleBin", "RecycleBin.csproj", "{041D4E92-F951-428B-9F8B-C922ECEF2382}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecycleBin", "RecycleBin\RecycleBin.csproj", "{041D4E92-F951-428B-9F8B-C922ECEF2382}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

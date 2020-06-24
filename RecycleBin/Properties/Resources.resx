@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<!-- ﻿<?xml version="1.0" encoding="utf-8"?> -->
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,25 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ClearRecycleBin" xml:space="preserve">
-    <value>清空回收站</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="RecycleBinEmptyIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\recycle-bin.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Exit" xml:space="preserve">
-    <value>退出</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>语言</value>
-  </data>
-  <data name="OpenRecycleBin" xml:space="preserve">
-    <value>打开回收站</value>
-  </data>
-  <data name="RecycleBin" xml:space="preserve">
-    <value>回收站</value>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>设置</value>
-  </data>
-  <data name="SupportedLanguages" xml:space="preserve">
-    <value>简体中文,English</value>
+  <data name="RecycleBinFullIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\recycle-bin-full.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

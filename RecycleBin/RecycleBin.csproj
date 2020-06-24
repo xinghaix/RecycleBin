@@ -14,7 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>xinghaix_LUXIN.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>xinghaix_RecycleBin.snk</AssemblyOriginatorKeyFile>
     <PublicSign>true</PublicSign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -52,12 +52,15 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CSDeskBand.cs" />
+    <Compile Include="Deskband.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Properties\ResourcesEn.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -79,6 +82,9 @@
     </Compile>
     <Compile Include="TrayContextMenu.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControl2.xaml.cs">
+      <DependentUpon>UserControl2.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -105,13 +111,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="xinghaix_LUXIN.snk" />
+    <None Include="xinghaix_RecycleBin.snk" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
     <Content Include="Resources\recycle-bin-full.ico" />
     <Content Include="Resources\recycle-bin.ico" />
-    <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="UserControl2.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
