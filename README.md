@@ -7,3 +7,6 @@
 3. 双击托盘菜单清空回收站
 4. 右键托盘菜单进行相关设置
 5. 国际化（中英文）
+
+# 下载地址
+https://github.com/xinghaix/RecycleBin/releases
