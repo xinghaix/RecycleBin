@@ -61,6 +61,15 @@ namespace RecycleBin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 开机自启.
+        /// </summary>
+        internal static string AutoStart {
+            get {
+                return ResourceManager.GetString("AutoStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 清空回收站.
         /// </summary>
         internal static string ClearRecycleBin {

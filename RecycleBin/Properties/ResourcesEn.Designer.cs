@@ -61,6 +61,15 @@ namespace RecycleBin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto start while boot.
+        /// </summary>
+        internal static string AutoStart {
+            get {
+                return ResourceManager.GetString("AutoStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear RecycleBin.
         /// </summary>
         internal static string ClearRecycleBin {
